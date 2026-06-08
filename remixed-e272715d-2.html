@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GW × MeYou</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#233D79;--blue-bg:#edf1f9;--pink:#D58994;--pink-bg:#fdf0f2;
+  --green:#0a7c4e;--green-bg:#e6f5ee;--red:#c0392b;--red-bg:#fdecea;
+  --amber:#8a5c00;--amber-bg:#fef3dc;--purple:#5b35b0;--purple-bg:#f0ebfc;
+  --text:#1a1a1a;--text2:#555;--text3:#888;--border:#ddd;--bg:#f5f4f1;
+  --font:'IBM Plex Sans Arabic',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh}
+
+/* NAV */
+nav{background:#0f0f0f;display:flex;align-items:center;justify-content:space-between;padding:0 18px;position:sticky;top:0;z-index:100;border-bottom:1px solid #333}
+.nav-logo{color:#fff;font-size:14px;font-weight:600;padding:14px 0}
+.nav-logo span{color:var(--pink)}
+.nav-tabs{display:flex}
+.ntab{padding:16px 14px;color:#666;font-size:12px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--font);transition:color .15s}
+.ntab:hover{color:#bbb}
+.ntab.on{color:#fff;border-bottom-color:var(--pink)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.lang-sw{display:flex;gap:2px;background:#1a1a1a;border:1px solid #333;border-radius:20px;padding:3px}
+.lbtn{padding:3px 9px;border-radius:16px;border:none;background:none;color:#666;font-size:11px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.lbtn.on{background:#fff;color:#000}
+.mbadge{background:#2a2a2a;border:1px solid #444;color:#aaa;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px;letter-spacing:.04em}
+.nbtn{background:none;border:1px solid #555;color:#aaa;font-size:11px;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:var(--font)}
+.nbtn:hover{border-color:var(--pink);color:var(--pink)}
+
+/* VIEWS */
+.view{display:none;max-width:980px;margin:0 auto;padding:22px 16px 60px}
+.view.on{display:block}
+
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:500;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.login-box{background:#fff;border-radius:14px;padding:30px 26px;width:310px;text-align:center}
+.login-box h2{font-size:15px;font-weight:600;margin-bottom:5px}
+.login-box p{font-size:12px;color:var(--text3);margin-bottom:18px}
+.login-box input{font-family:var(--mono);font-size:14px;text-align:center;letter-spacing:.1em;background:#fafafa;border:1px solid var(--border);border-radius:8px;padding:9px;width:100%;margin-bottom:10px;outline:none}
+.login-box input:focus{border-color:var(--blue)}
+.errmsg{color:var(--red);font-size:11px;margin-bottom:8px;min-height:16px}
+.btn-login{width:100%;padding:10px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;margin-bottom:6px}
+.btn-viewer{width:100%;padding:8px;background:none;color:var(--text3);border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:12px;cursor:pointer}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:14px;overflow:hidden}
+.card-head{padding:11px 16px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border);background:#fafafa}
+.card-num{width:20px;height:20px;background:var(--blue);color:#fff;border-radius:50%;font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-title{font-size:12px;font-weight:600}
+.card-body{padding:16px}
+
+/* FORM */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:3px;margin-bottom:10px}
+.field:last-child{margin-bottom:0}
+.field label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.04em}
+.req{color:var(--pink);margin-right:2px}
+input[type=text],input[type=date],input[type=number],select,textarea{
+  font-family:var(--font);font-size:13px;color:var(--text);background:#fafafa;
+  border:1px solid var(--border);border-radius:7px;padding:8px 10px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);background:#fff}
+input[type=number]{font-family:var(--mono)}
+textarea{resize:vertical;min-height:60px}
+.sfx-wrap{position:relative}
+.sfx-wrap input{padding-left:44px}
+.sfx{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:10px;font-weight:600;color:var(--text3);font-family:var(--mono);pointer-events:none}
+.type-row{display:flex;gap:6px;margin-top:2px}
+.tbtn{flex:1;padding:7px 4px;border:1px solid var(--border);border-radius:7px;background:#fafafa;font-family:var(--font);font-size:11px;font-weight:500;cursor:pointer;text-align:center;color:var(--text2)}
+.tbtn.sel-c{background:var(--blue-bg);border-color:var(--blue);color:var(--blue)}
+.tbtn.sel-i{background:var(--amber-bg);border-color:var(--amber);color:var(--amber)}
+.tbtn.sel-v{background:#edf5ff;border-color:#5b9bd5;color:#1a5fa8}
+.notice{border-radius:7px;padding:8px 12px;font-size:11px;margin-bottom:10px;display:none}
+.notice.on{display:block}
+.ni{background:var(--amber-bg);border:1px solid #f0c870;color:var(--amber)}
+.nv{background:#edf5ff;border:1px solid #5b9bd5;color:#1a5fa8}
+
+/* COST TABLE */
+.cost-wrap{overflow-x:auto;margin-bottom:8px}
+.ctbl{width:100%;border-collapse:collapse;min-width:580px}
+.ctbl th{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;padding:6px 8px;background:#f5f5f5;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+.ctbl td{padding:3px 4px;border-bottom:1px solid #f5f5f5;vertical-align:middle}
+.ctbl tr:last-child td{border-bottom:none}
+.ctbl input{padding:6px 7px;font-size:12px;background:transparent;border:1px solid transparent;border-radius:5px;font-family:var(--font);width:100%;outline:none}
+.ctbl input:focus{background:#fff;border-color:var(--blue)}
+.ctbl input[type=number]{font-family:var(--mono)}
+.add-row{display:flex;align-items:center;justify-content:center;gap:5px;padding:7px;background:none;border:1px dashed var(--border);border-radius:7px;font-family:var(--font);font-size:11px;color:var(--text3);cursor:pointer;width:100%}
+.add-row:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+.delbtn{width:26px;height:26px;border:none;background:none;cursor:pointer;border-radius:5px;color:#ccc;font-size:16px;display:flex;align-items:center;justify-content:center;margin:0 auto}
+.delbtn:hover{background:var(--red-bg);color:var(--red)}
+
+/* invoice upload */
+.inv-lbl{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;background:#f0f7ff;border:1px solid #b3d4f5;border-radius:6px;font-size:11px;color:var(--blue);cursor:pointer;font-family:var(--font);font-weight:500;white-space:nowrap}
+.inv-lbl:hover{background:#daeeff}
+.inv-file{display:flex;align-items:center;gap:4px;background:#f5f9ff;border:1px solid #d0e4f7;border-radius:5px;padding:3px 7px;font-size:10px;margin-top:2px}
+.inv-file-name{color:var(--blue);cursor:pointer;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:90px;text-decoration:underline}
+.inv-del{color:#bbb;cursor:pointer;font-size:13px;flex-shrink:0}
+.inv-del:hover{color:var(--red)}
+
+/* results */
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rbox{border-radius:8px;padding:11px 13px;border:1px solid transparent}
+.rbox .rl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.rbox .rv{font-family:var(--mono);font-size:16px;font-weight:500}
+.rbox .rn{font-size:10px;margin-top:2px;opacity:.7}
+.rb-blue{background:var(--blue-bg);border-color:#c5d3ed}.rb-blue .rl,.rb-blue .rv,.rb-blue .rn{color:var(--blue)}
+.rb-red{background:var(--red-bg);border-color:#f2c4bf}.rb-red .rl,.rb-red .rv,.rb-red .rn{color:var(--red)}
+.rb-green{background:var(--green-bg);border-color:#b2dfc8}.rb-green .rl,.rb-green .rv,.rb-green .rn{color:var(--green)}
+.rb-purple{background:var(--purple-bg);border-color:#d0bef5}.rb-purple .rl,.rb-purple .rv,.rb-purple .rn{color:var(--purple)}
+.rb-pink{background:var(--pink-bg);border-color:#f0c8cf}.rb-pink .rl,.rb-pink .rv,.rb-pink .rn{color:#9b3f50}
+.rb-gw{background:#1c1c1c;border-color:#333}.rb-gw .rl,.rb-gw .rn{color:#999}.rb-gw .rv{color:#fff}
+.rb-full{grid-column:span 2}
+.divider{height:1px;background:var(--border);margin:12px 0}
+.spills{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.spill{padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:#fafafa;font-size:11px;font-weight:500;cursor:pointer;color:var(--text2)}
+.spill.s-progress{background:var(--amber-bg);border-color:#f0c870;color:var(--amber)}
+.spill.s-done{background:var(--green-bg);border-color:#7dcaaa;color:var(--green)}
+.spill.s-pending{background:#f5f5f5;border-color:#ccc;color:#555}
+.btn-save{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;margin-top:14px}
+.btn-save:hover{background:#3455a0}
+.btn-clear{width:100%;padding:9px;background:none;color:var(--text3);border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:11px;cursor:pointer;margin-top:6px}
+.btn-clear:hover{color:var(--red);border-color:var(--red)}
+.form-back{background:none;border:none;color:var(--text3);font-size:12px;cursor:pointer;font-family:var(--font);padding:0;margin-bottom:18px}
+.form-back:hover{color:var(--blue)}
+
+/* PROJECTS */
+.page-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.page-title{font-size:17px;font-weight:600}
+.hdr-btns{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.btn-new{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer}
+.btn-rep{background:var(--purple-bg);border:1px solid #d0bef5;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;color:var(--purple);cursor:pointer;padding:8px 14px}
+.year-sel{font-family:var(--font);font-size:12px;padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:#fafafa;outline:none;cursor:pointer}
+.filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.fpill{padding:5px 13px;border:1px solid var(--border);border-radius:20px;background:#fafafa;font-size:11px;font-weight:500;cursor:pointer;color:var(--text2)}
+.fpill.on{background:var(--blue);border-color:var(--blue);color:#fff}
+
+/* type counters */
+.type-counts{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tc-box{border-radius:8px;padding:8px 14px;display:flex;align-items:center;gap:8px;border:1px solid transparent}
+.tc-box .tc-n{font-family:var(--mono);font-size:15px;font-weight:600}
+
+/* summary strip */
+.sum-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:14px}
+.sbox{background:#fff;border:1px solid var(--border);border-radius:8px;padding:12px 13px}
+.sbox .sl{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.sbox .sv{font-family:var(--mono);font-size:13px;font-weight:500}
+.rem-banner{grid-column:span 7;border-width:2px;border-radius:10px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:relative;overflow:hidden}
+.rem-banner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.03) 8px,rgba(255,255,255,.03) 16px)}
+.rem-left{display:flex;align-items:center;gap:10px;position:relative}
+.rem-val{font-family:var(--mono);font-size:24px;font-weight:700;color:#fff;position:relative}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.pulse{animation:pulse 1.5s infinite}
+
+/* badges */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap}
+.b-done{background:var(--green-bg);color:var(--green)}
+.b-progress{background:var(--amber-bg);color:var(--amber)}
+.b-pending{background:#f0f0f0;color:#666}
+.b-paid{background:var(--green-bg);color:var(--green)}
+.b-partial{background:var(--amber-bg);color:var(--amber)}
+.b-unpaid{background:var(--red-bg);color:var(--red)}
+.b-c{background:var(--blue-bg);color:var(--blue)}
+.b-i{background:var(--amber-bg);color:var(--amber)}
+.b-v{background:#edf5ff;color:#1a5fa8}
+
+/* project cards */
+.pcard{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;overflow:hidden}
+.pcard:hover{border-color:#bbb}
+.pcard-top{display:grid;grid-template-columns:1fr auto auto auto auto;align-items:center;gap:12px;padding:12px 15px;cursor:pointer}
+.pc-name{font-size:13px;font-weight:600}
+.pc-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.pbar{background:#eee;border-radius:20px;height:7px;overflow:hidden;margin-top:5px;max-width:180px}
+.pbar-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,var(--green),#22c984)}
+.pbar-fill.full{background:linear-gradient(90deg,#0a7c4e,#22c984)}
+.pdetail{display:none;border-top:1px solid #f0f0f0;background:#fafafa}
+.pdetail.on{display:block}
+.dsec{padding:14px 16px;border-bottom:1px solid #ececec}
+.dsec:last-child{border-bottom:none}
+.dsec-title{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.dbox{background:#fff;border:1px solid var(--border);border-radius:7px;padding:9px 11px}
+.dbox-l{font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;margin-bottom:3px;letter-spacing:.04em}
+.dbox-v{font-family:var(--mono);font-size:13px;font-weight:500}
+.cd-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+.cd-tbl th{text-align:right;padding:5px 8px;background:#f0f0f0;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase}
+.cd-tbl td{padding:6px 8px;border-bottom:1px solid #f0f0f0;vertical-align:middle}
+.cd-tbl tr:last-child td{border-bottom:none}
+.inv-chip{display:inline-flex;align-items:center;gap:3px;background:#f0f7ff;border:1px solid #b3d4f5;border-radius:4px;padding:2px 7px;font-size:10px;color:var(--blue);cursor:pointer;margin:1px}
+.inv-chip:hover{background:#daeeff}
+.detail-actions{display:flex;gap:7px;margin-top:12px}
+.btn-edit{padding:6px 13px;background:none;border:1px solid var(--blue);color:var(--blue);border-radius:6px;font-family:var(--font);font-size:11px;font-weight:600;cursor:pointer}
+.btn-del{padding:6px 13px;background:none;border:1px solid #ddd;color:var(--text3);border-radius:6px;font-family:var(--font);font-size:11px;cursor:pointer}
+.btn-del:hover{border-color:var(--red);color:var(--red)}
+.note-box{background:#fff8e6;border:1px solid #f5dba0;border-radius:6px;padding:7px 11px;font-size:12px;color:var(--amber);margin-top:8px}
+.alloc-row{display:flex;align-items:center;gap:8px;font-size:11px;padding:4px 0;border-bottom:1px solid #f0f0f0}
+.alloc-row:last-child{border-bottom:none}
+
+/* PAYMENTS */
+.hsums{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:14px}
+.hbox{border-radius:8px;padding:11px 13px;border:1px solid transparent}
+.hbox-due{background:var(--pink-bg);border-color:#f0c8cf}.hbox-due .hl,.hbox-due .hv{color:#9b3f50}
+.hbox-paid{background:var(--green-bg);border-color:#b2dfc8}.hbox-paid .hl,.hbox-paid .hv{color:var(--green)}
+.hbox-rem{background:var(--red-bg);border-color:#f2c4bf}.hbox-rem .hl,.hbox-rem .hv{color:var(--red)}
+.hbox-rem.zero{background:var(--green-bg);border-color:#b2dfc8}.hbox-rem.zero .hl,.hbox-rem.zero .hv{color:var(--green)}
+.hl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.hv{font-family:var(--mono);font-size:15px;font-weight:600}
+.hub-top{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.hub-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.hub-head{padding:11px 16px;background:#0f0f0f;color:#fff;font-size:12px;font-weight:600}
+.hub-body{padding:16px}
+.pay-log{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.pay-log-head{padding:10px 16px;background:#fafafa;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;display:flex;justify-content:space-between}
+.pay-log-body{max-height:300px;overflow-y:auto}
+.plr{padding:10px 16px;border-bottom:1px solid #f5f5f5;display:flex;align-items:flex-start;gap:10px}
+.plr:last-child{border-bottom:none}
+.plr-date{font-family:var(--mono);font-size:11px;color:var(--text3);flex-shrink:0;width:88px}
+.plr-body{flex:1}
+.plr-amt{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--green)}
+.chip{display:inline-flex;align-items:center;background:var(--blue-bg);border:1px solid #c5d3ed;border-radius:5px;padding:2px 7px;font-size:10px;color:var(--blue);margin:2px 2px 0 0}
+.chip.full{background:var(--green-bg);border-color:#b2dfc8;color:var(--green)}
+.chip.partial{background:var(--amber-bg);border-color:#f0c870;color:var(--amber)}
+.pmt-x{color:#c0392b;cursor:pointer;font-size:16px;padding:4px 8px;flex-shrink:0;border:1px solid #f2c4bf;border-radius:5px;background:#fdecea}
+.pmt-x:hover{background:#c0392b;color:#fff}
+.ppl-card{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:9px;padding:14px 16px}
+.ppl-card.settled{border-color:#b2dfc8;background:#f6fdf9}
+
+/* REPORT */
+.rep-range-btns{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
+.rbtn{padding:6px 13px;border:1px solid var(--border);border-radius:6px;background:#fafafa;font-family:var(--font);font-size:11px;cursor:pointer}
+.rbtn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg)}
+.btn-build{padding:9px 20px;background:var(--purple);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer}
+.btn-dl{padding:9px 20px;background:var(--green);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;display:none}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:900;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.lb.on{display:flex}
+.lb img{max-width:92vw;max-height:84vh;border-radius:6px}
+.lb-btns{display:flex;gap:8px}
+.lb-btn{color:#fff;font-size:12px;opacity:.75;cursor:pointer;padding:6px 14px;border:1px solid rgba(255,255,255,.3);border-radius:6px;background:none}
+.lb-btn:hover{opacity:1}
+
+/* editor-only */
+.eo{display:none}
+body.editor .eo{display:flex}
+body.editor .eo-block{display:block}
+.eo-block{display:none}
+
+.empty{text-align:center;padding:50px 20px;color:var(--text3)}
+.empty .ei{font-size:36px;margin-bottom:10px;opacity:.4}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(60px);background:#1a1a1a;color:#fff;padding:10px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:680px){
+  .sum-strip{grid-template-columns:repeat(2,1fr)}.rem-banner{grid-column:span 2}
+  .grid2{grid-template-columns:1fr}.rgrid{grid-template-columns:1fr}.rb-full{grid-column:span 1}
+  .pcard-top{grid-template-columns:1fr auto auto}.dgrid{grid-template-columns:1fr 1fr}
+  .hub-top{grid-template-columns:1fr}.hsums{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay">
+  <div class="login-box">
+    <div style="font-size:26px;margin-bottom:10px">GW <span style="color:var(--pink)">♥</span> MeYou</div>
+    <h2>Galaxy Way × MeYou</h2>
+    <p>أدخل كلمة السر للتعديل أو تابع كـ Viewer</p>
+    <input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <div class="errmsg" id="pw-err"></div>
+    <button class="btn-login" onclick="doLogin()">🔓 دخول Editor</button>
+    <button class="btn-viewer" onclick="doViewer()">👁 Viewer فقط</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="lb">
+  <img id="lb-img" src="" alt="">
+  <div class="lb-btns">
+    <button class="lb-btn" id="lb-dl">⬇ تحميل</button>
+    <button class="lb-btn" onclick="closeLB()">✕ إغلاق</button>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">GW <span>♥</span> MeYou</div>
+  <div class="nav-tabs">
+    <button class="ntab on" onclick="go('projects')">📂 المشاريع</button>
+    <button class="ntab" onclick="go('payments')">💳 الدفعات</button>
+    <button class="ntab eo" onclick="go('form')">+ جديد</button>
+    <button class="ntab" onclick="go('report')">📊 تقرير</button>
+  </div>
+  <div class="nav-right">
+    <div class="lang-sw">
+      <button class="lbtn on" id="la" onclick="setLang('ar')">ع</button>
+      <button class="lbtn" id="le" onclick="setLang('en')">EN</button>
+    </div>
+    <span class="mbadge" id="mbadge">👁 VIEWER</span>
+    <button class="nbtn" id="btn-unlock" onclick="showOverlay()">🔓 دخول</button>
+    <button class="nbtn eo" id="btn-lock" onclick="doLock()">🔒 قفل</button>
+  </div>
+</nav>
+
+<!-- ══ PROJECTS ══ -->
+<div class="view on" id="view-projects">
+  <div class="page-hdr">
+    <div class="page-title">جميع المشاريع</div>
+    <div class="hdr-btns">
+      <button class="btn-rep" onclick="go('report')">📊 تقرير</button>
+      <select class="year-sel" id="year-sel" onchange="renderProjs()">
+        <option value="all">📅 كل السنوات</option>
+      </select>
+      <button class="btn-new eo" onclick="newProj()">+ إضافة مشروع</button>
+    </div>
+  </div>
+  <div class="filter-bar">
+    <button class="fpill on" onclick="setF('all',this)">الكل</button>
+    <button class="fpill" onclick="setF('progress',this)">جاري</button>
+    <button class="fpill" onclick="setF('done',this)">مكتمل</button>
+    <button class="fpill" onclick="setF('unpaid',this)">لم يُدفع</button>
+    <button class="fpill" onclick="setF('partial',this)">جزئي</button>
+    <button class="fpill" onclick="setF('paid',this)">مدفوع</button>
+  </div>
+  <div class="type-counts">
+    <div class="tc-box" style="background:var(--blue-bg);border-color:#c5d3ed"><span class="badge b-c">تجاري</span><span class="tc-n" style="color:var(--blue)" id="cnt-c">0</span></div>
+    <div class="tc-box" style="background:var(--amber-bg);border-color:#f0c870"><span class="badge b-i">داخلي</span><span class="tc-n" style="color:var(--amber)" id="cnt-i">0</span></div>
+    <div class="tc-box" style="background:#edf5ff;border-color:#5b9bd5"><span class="badge b-v">استثماري</span><span class="tc-n" style="color:#1a5fa8" id="cnt-v">0</span></div>
+    <div class="tc-box" style="background:#f5f5f5;border-color:#ddd"><span style="font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase">الإجمالي</span><span class="tc-n" style="color:var(--text2)" id="cnt-all">0</span></div>
+  </div>
+  <div class="sum-strip">
+    <div class="sbox" style="background:var(--blue-bg);border-color:#c5d3ed"><div class="sl" style="color:var(--blue)">مشاريع تجارية</div><div class="sv" style="color:var(--blue)" id="sv-cnt">0</div></div>
+    <div class="sbox" style="background:var(--blue-bg);border-color:#c5d3ed"><div class="sl" style="color:var(--blue)">قيمة التجاري</div><div class="sv" style="color:var(--blue)" id="sv-deal">0.000</div></div>
+    <div class="sbox" style="background:var(--red-bg);border-color:#f2c4bf"><div class="sl" style="color:var(--red)">صرف MeYou</div><div class="sv" style="color:var(--red)" id="sv-out">0.000</div></div>
+    <div class="sbox" style="background:var(--pink-bg);border-color:#f0c8cf"><div class="sl" style="color:#9b3f50">مستحق MeYou</div><div class="sv" style="color:#9b3f50" id="sv-due">0.000</div></div>
+    <div class="sbox" style="background:var(--green-bg);border-color:#b2dfc8"><div class="sl" style="color:var(--green)">الأرباح</div><div class="sv" style="color:var(--green)" id="sv-profit">0.000</div></div>
+    <div class="sbox" style="background:var(--green-bg);border-color:#b2dfc8"><div class="sl" style="color:var(--green)">ربح MeYou 50%</div><div class="sv" style="color:var(--green)" id="sv-my50">0.000</div></div>
+    <div class="sbox" style="background:#1c1c1c;border-color:#333"><div class="sl" style="color:#999">ربح GW 50%</div><div class="sv" style="color:#fff" id="sv-gw50">0.000</div></div>
+    <div class="sbox rem-banner" id="rem-box" style="background:linear-gradient(135deg,#c0392b,#96281b);border-color:#c0392b">
+      <div class="rem-left">
+        <span id="rem-icon" style="font-size:20px" class="pulse">🔴</span>
+        <div><div id="rem-title" style="font-size:11px;font-weight:700;color:rgba(255,255,255,.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">المتبقي لدفعه لـ MeYou</div>
+        <div id="rem-sub" style="font-size:10px;color:rgba(255,255,255,.5)">من المشاريع المكتملة</div></div>
+      </div>
+      <div class="rem-val" id="rem-val">0.000 OMR</div>
+    </div>
+  </div>
+  <div id="proj-list"></div>
+</div>
+
+<!-- ══ PAYMENTS ══ -->
+<div class="view" id="view-payments">
+  <div class="page-hdr" style="margin-bottom:14px"><div class="page-title">💳 الدفعات</div></div>
+  <div class="hsums">
+    <div class="hbox hbox-due"><div class="hl">إجمالي مستحق</div><div class="hv" id="hv-due">0.000 OMR</div></div>
+    <div class="hbox hbox-paid"><div class="hl">إجمالي مدفوع</div><div class="hv" id="hv-paid">0.000 OMR</div></div>
+    <div class="hbox hbox-rem" id="hrem"><div class="hl">إجمالي متبقي</div><div class="hv" id="hv-rem">0.000 OMR</div></div>
+  </div>
+  <div class="hub-top">
+    <div class="hub-card eo-block">
+      <div class="hub-head">💰 تسجيل دفعة من Galaxy Way</div>
+      <div class="hub-body">
+        <div class="field"><label>التاريخ <span class="req">*</span></label><input type="date" id="gp-date"></div>
+        <div class="field"><label>المبلغ (OMR) <span class="req">*</span></label><div class="sfx-wrap"><span class="sfx">OMR</span><input type="number" id="gp-amt" placeholder="0.000" step="0.001" min="0"></div></div>
+        <div class="field"><label>ملاحظة</label><input type="text" id="gp-note" placeholder="دفعة مايو..."></div>
+        <div class="field">
+          <label>📎 إيصال (اختياري)</label>
+          <label class="inv-lbl">📎 رفع ملف<input type="file" id="gp-file" accept="image/*,application/pdf" style="display:none" onchange="gpFileChanged()"></label>
+          <div id="gp-fp"></div>
+        </div>
+        <button class="btn-save" style="margin-top:8px" onclick="addGP()">✓ تسجيل وتوزيع تلقائي</button>
+      </div>
+    </div>
+    <div class="pay-log">
+      <div class="pay-log-head"><span>سجل الدفعات من GW</span><span id="gp-total" style="font-family:var(--mono);color:var(--green)"></span></div>
+      <div class="pay-log-body" id="gp-log"></div>
+    </div>
+  </div>
+  <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:10px">المشاريع المكتملة — الأقدم أولاً (FIFO)</div>
+  <div id="ppl-list"></div>
+</div>
+
+<!-- ══ FORM ══ -->
+<div class="view" id="view-form">
+  <button class="form-back" onclick="go('projects')">← العودة للمشاريع</button>
+  <div style="font-size:17px;font-weight:600;margin-bottom:3px" id="form-title">مشروع جديد</div>
+  <div style="font-size:12px;color:var(--text3);margin-bottom:18px">Galaxy Way × MeYou</div>
+  <div class="card">
+    <div class="card-head"><div class="card-num">١</div><div class="card-title">بيانات المشروع</div></div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="field"><label><span class="req">*</span>التاريخ</label><input type="date" id="f-date"></div>
+        <div class="field"><label>رقم عرض السعر</label><input type="text" id="f-quot" placeholder="GW-2026-001"></div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label><span class="req">*</span>اسم العميل</label><input type="text" id="f-client" placeholder="Oman Airports"></div>
+        <div class="field"><label>اسم المشروع</label><input type="text" id="f-project" placeholder="هدايا موظفين 2026"></div>
+      </div>
+      <div class="field">
+        <label>نوع المشروع</label>
+        <div class="type-row">
+          <button class="tbtn sel-c" id="tc" onclick="setType('c')">💼 تجاري</button>
+          <button class="tbtn" id="ti" onclick="setType('i')">🎁 داخلي</button>
+          <button class="tbtn" id="tv" onclick="setType('v')">📈 استثماري</button>
+        </div>
+        <input type="hidden" id="f-type" value="c">
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num">٢</div><div class="card-title">قيمة الصفقة</div></div>
+    <div class="card-body">
+      <div class="grid2">
+        <div class="field"><label><span class="req">*</span>قيمة الديل</label><div class="sfx-wrap"><span class="sfx">OMR</span><input type="number" id="f-deal" placeholder="0.000" step="0.001" min="0" oninput="calc()"></div></div>
+        <div class="field"><label>رسوم GW 5%</label><div class="sfx-wrap"><span class="sfx">OMR</span><input type="number" id="f-gw5" readonly style="background:#f5f5f5;color:var(--purple);font-family:var(--mono)"></div><span style="font-size:10px;color:var(--text3)">تلقائي — 5% من الديل</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num">٣</div><div class="card-title">تكاليف المشروع</div></div>
+    <div class="card-body">
+      <div class="notice ni" id="f-ni">⚠️ مشروع داخلي — MeYou تسترجع التكاليف فقط.</div>
+      <div class="notice nv" id="f-nv">📈 استثماري — التكاليف 50% MeYou / 50% GW.</div>
+      <div class="cost-wrap"><table class="ctbl">
+        <thead><tr>
+          <th style="width:28px">#</th><th>بند التكلفة</th>
+          <th style="width:115px">المبلغ (OMR)</th><th>ملاحظات</th>
+          <th style="width:120px">📎 فاتورة</th><th style="width:28px"></th>
+        </tr></thead>
+        <tbody id="cost-body"></tbody>
+      </table></div>
+      <button class="add-row" onclick="addRow()">+ إضافة بند</button>
+      <div class="divider"></div>
+      <div class="rbox rb-red"><div class="rl">💸 إجمالي صرف MeYou</div><div class="rv" id="r-costs">0.000 OMR</div><div class="rn">إجمالي التكاليف</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num">٤</div><div class="card-title">توزيع الأرباح</div></div>
+    <div class="card-body">
+      <div class="rgrid">
+        <div class="rbox rb-blue"><div class="rl">صافي الربح</div><div class="rv" id="r-profit">0.000 OMR</div><div class="rn">الديل − تكاليف − GW 5%</div></div>
+        <div class="rbox rb-purple"><div class="rl">رسوم GW 5%</div><div class="rv" id="r-gw5d">0.000 OMR</div><div class="rn">مخصومة من الربح</div></div>
+        <div class="rbox rb-green"><div class="rl">ربح MeYou 50%</div><div class="rv" id="r-my50">0.000 OMR</div><div class="rn" id="rn-my50">نصف صافي الربح</div></div>
+        <div class="rbox rb-gw"><div class="rl">ربح GW 50%</div><div class="rv" id="r-gw50">0.000 OMR</div><div class="rn">نصف صافي الربح</div></div>
+        <div class="rbox rb-pink rb-full" style="border-width:2px"><div class="rl">💰 المستحق لـ MeYou</div><div class="rv" id="r-due" style="font-size:20px">0.000 OMR</div><div class="rn">تكاليف + ربح 50%</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num">٥</div><div class="card-title">الحالة والملاحظات</div></div>
+    <div class="card-body">
+      <div class="field">
+        <label>حالة المشروع</label>
+        <div class="spills">
+          <button class="spill s-progress" id="sp-progress" onclick="setSt('progress')">جاري</button>
+          <button class="spill" id="sp-done" onclick="setSt('done')">مكتمل ✓</button>
+          <button class="spill" id="sp-pending" onclick="setSt('pending')">معلّق</button>
+        </div>
+        <input type="hidden" id="f-st" value="progress">
+      </div>
+      <div class="field"><label>ملاحظات</label><textarea id="f-notes" placeholder="شروط خاصة، مراحل..."></textarea></div>
+    </div>
+  </div>
+  <input type="hidden" id="f-id" value="">
+  <button class="btn-save" id="btn-save" onclick="saveProj()">💾 حفظ المشروع</button>
+  <button class="btn-clear" onclick="resetForm()">مسح البيانات</button>
+</div>
+
+<!-- ══ REPORT ══ -->
+<div class="view" id="view-report">
+  <div class="page-hdr" style="margin-bottom:20px"><div class="page-title">📊 تقرير المشاريع</div></div>
+  <div class="card">
+    <div class="card-head"><div class="card-num" style="background:var(--purple)">①</div><div class="card-title">نطاق التقرير</div></div>
+    <div class="card-body">
+      <div class="grid2" style="margin-bottom:12px">
+        <div class="field"><label>من تاريخ</label><input type="date" id="rep-from"></div>
+        <div class="field"><label>إلى تاريخ</label><input type="date" id="rep-to"></div>
+      </div>
+      <div class="rep-range-btns">
+        <button class="rbtn" onclick="setRepRange('month')">هذا الشهر</button>
+        <button class="rbtn" onclick="setRepRange('quarter')">هذا الربع</button>
+        <button class="rbtn" onclick="setRepRange('year')">هذه السنة</button>
+        <button class="rbtn" onclick="setRepRange('all')">الكل</button>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="btn-build" onclick="buildReport()">🔍 إنشاء التقرير</button>
+        <button class="btn-dl" id="btn-dl" onclick="downloadReport()">⬇ تنزيل PDF</button>
+      </div>
+    </div>
+  </div>
+  <div id="rep-out"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const PASS='meyou2026', SP='gw_p_v5', SG='gw_g_v5';
+let projects=[], gPays=[], rowCnt=0, pType='c', pSt='progress', filt='all', lang='ar', isEd=false;
+let gpFile=null;
+
+// BOOT
+document.addEventListener('DOMContentLoaded',function(){
+  try{projects=JSON.parse(localStorage.getItem(SP))||[];}catch(e){projects=[];}
+  try{gPays=JSON.parse(localStorage.getItem(SG))||[];}catch(e){gPays=[];}
+  document.getElementById('f-date').value=td();
+  document.getElementById('gp-date').value=td();
+  addRow();addRow();addRow();
+  calc();
+
+  // event delegation for dynamically created buttons
+  // event delegation on document body (always works)
+  document.body.addEventListener('click',function(e){
+    var t=e.target;
+    while(t&&t!==document.body){
+      if(t.classList&&t.classList.contains('btn-edit')&&t.getAttribute('data-id')){
+        editProj(t.getAttribute('data-id'));return;
+      }
+      if(t.classList&&t.classList.contains('btn-del')&&t.getAttribute('data-id')){
+        delProj(t.getAttribute('data-id'));return;
+      }
+      if(t.getAttribute&&t.getAttribute('data-gp-del')){
+        alert('GP DELETE clicked: '+t.getAttribute('data-gp-del'));
+        delGP(t.getAttribute('data-gp-del'));return;
+      }
+      t=t.parentNode;
+    }
+  });
+});
+function save(){localStorage.setItem(SP,JSON.stringify(projects));localStorage.setItem(SG,JSON.stringify(gPays));}
+function td(){return new Date().toISOString().split('T')[0];}
+function fmt(n){return(+n||0).toFixed(3)+' OMR';}
+
+// AUTH
+function showOverlay(){
+  document.getElementById('pw').value='';
+  document.getElementById('pw-err').textContent='';
+  document.getElementById('overlay').style.display='flex';
+}
+function doLogin(){
+  var pw=document.getElementById('pw').value;
+  if(pw===PASS){
+    isEd=true;
+    document.body.classList.add('editor');
+    document.getElementById('overlay').style.display='none';
+    document.getElementById('mbadge').textContent='✏️ EDITOR';
+    document.getElementById('mbadge').style.cssText='background:#1a2e5a;border:1px solid #3455a0;color:#8aaae6;font-size:10px;font-weight:600;padding:4px 10px;border-radius:20px';
+    document.getElementById('btn-unlock').style.display='none';
+    renderProjs();
+  } else {
+    document.getElementById('pw-err').textContent='كلمة السر غلط';
+  }
+}
+function doViewer(){
+  isEd=false;
+  document.body.classList.remove('editor');
+  document.getElementById('overlay').style.display='none';
+  renderProjs();
+}
+function doLock(){
+  isEd=false;
+  document.body.classList.remove('editor');
+  document.getElementById('mbadge').textContent='👁 VIEWER';
+  document.getElementById('mbadge').style.cssText='';
+  document.getElementById('btn-unlock').style.display='flex';
+  go('projects');
+  toast('تم القفل');
+}
+
+// NAV
+function go(v){
+  if(v==='form'&&!isEd){toast('⚠️ Viewer mode');return;}
+  document.querySelectorAll('.view').forEach(function(el){el.classList.remove('on');});
+  document.querySelectorAll('.ntab').forEach(function(el){el.classList.remove('on');});
+  document.getElementById('view-'+v).classList.add('on');
+  var tabs=document.querySelectorAll('.ntab');
+  if(v==='projects'){tabs[0].classList.add('on');renderProjs();}
+  else if(v==='payments'){tabs[1].classList.add('on');renderPays();}
+  else if(v==='report'){tabs[3].classList.add('on');}
+  else{tabs[2].classList.add('on');}
+}
+function newProj(){if(!isEd)return;resetForm(true);document.getElementById('form-title').textContent='مشروع جديد';document.getElementById('btn-save').textContent='💾 حفظ المشروع';go('form');}
+function setF(v,el){filt=v;document.querySelectorAll('.fpill').forEach(function(p){p.classList.remove('on');});el.classList.add('on');renderProjs();}
+function setLang(l){lang=l;document.getElementById('la').classList.toggle('on',l==='ar');document.getElementById('le').classList.toggle('on',l==='en');document.documentElement.dir=l==='ar'?'rtl':'ltr';}
+
+// FIFO
+function fifo(){
+  var done=projects.filter(function(p){return p.projStatus==='done';}).slice().sort(function(a,b){return a.date.localeCompare(b.date);});
+  var pool=gPays.map(function(g){return Object.assign({},g,{rem:+g.amount});});
+  var al={};
+  done.forEach(function(p){al[p.id]={allocated:0,srcs:[]};});
+  for(var i=0;i<done.length;i++){
+    var p=done[i];var need=+p.meyouDue;
+    for(var j=0;j<pool.length;j++){
+      var g=pool[j];
+      if(need<0.001)break;if(g.rem<0.001)continue;
+      var take=Math.min(need,g.rem);
+      al[p.id].allocated+=take;
+      al[p.id].srcs.push({gid:g.id,date:g.date,note:g.note||'',amt:take});
+      g.rem-=take;need-=take;
+    }
+  }
+  return{al:al,pool:pool};
+}
+function payStatus(due,alloc){if(alloc<0.001)return'unpaid';if(alloc>=due-0.001)return'paid';return'partial';}
+
+// RENDER PROJECTS
+function renderProjs(){
+  var res=fifo();var al=res.al;
+  projects.forEach(function(p){
+    if(p.projStatus==='done')p.payStatus=payStatus(+p.meyouDue,(al[p.id]||{allocated:0}).allocated);
+    else p.payStatus='unpaid';
+  });
+  save();
+
+  // year filter
+  var ySel=document.getElementById('year-sel');
+  var years=[];
+  projects.forEach(function(p){var y=(p.date||'').slice(0,4);if(y&&years.indexOf(y)===-1)years.push(y);});
+  years.sort().reverse();
+  var curY=ySel.value;
+  ySel.innerHTML='<option value="all">📅 كل السنوات</option>';
+  years.forEach(function(y){var o=document.createElement('option');o.value=y;o.textContent=y;ySel.appendChild(o);});
+  if(years.indexOf(curY)!==-1)ySel.value=curY;
+  var selY=ySel.value;
+
+  var yf=projects.filter(function(p){return selY==='all'||(p.date||'').startsWith(selY);});
+  var comm=yf.filter(function(p){return p.type==='c';});
+  var intern=yf.filter(function(p){return p.type==='i';});
+  var invest=yf.filter(function(p){return p.type==='v';});
+
+  document.getElementById('cnt-c').textContent=comm.length;
+  document.getElementById('cnt-i').textContent=intern.length;
+  document.getElementById('cnt-v').textContent=invest.length;
+  document.getElementById('cnt-all').textContent=yf.length;
+  document.getElementById('sv-cnt').textContent=comm.length;
+  document.getElementById('sv-deal').textContent=comm.reduce(function(a,p){return a+(+p.deal||0);},0).toFixed(3)+' OMR';
+  document.getElementById('sv-out').textContent=yf.reduce(function(a,p){return a+(+p.totalOutflow||0);},0).toFixed(3)+' OMR';
+  document.getElementById('sv-due').textContent=yf.reduce(function(a,p){return a+(+p.meyouDue||0);},0).toFixed(3)+' OMR';
+  document.getElementById('sv-profit').textContent=comm.reduce(function(a,p){return a+(+p.profit||0);},0).toFixed(3)+' OMR';
+  document.getElementById('sv-my50').textContent=comm.reduce(function(a,p){return a+(+p.meyou50||0);},0).toFixed(3)+' OMR';
+  document.getElementById('sv-gw50').textContent=comm.reduce(function(a,p){return a+(+p.gw50||0);},0).toFixed(3)+' OMR';
+
+  // remaining banner
+  var doneDue=projects.filter(function(p){return p.projStatus==='done';}).reduce(function(a,p){return a+(+p.meyouDue||0);},0);
+  var totPaid=gPays.reduce(function(a,g){return a+(+g.amount||0);},0);
+  var diff=doneDue-totPaid;
+  var rem=Math.max(0,diff),over=diff<-0.001?Math.abs(diff):0;
+  var rb=document.getElementById('rem-box');
+  var ri=document.getElementById('rem-icon');
+  var rt=document.getElementById('rem-title');
+  var rs=document.getElementById('rem-sub');
+  var rv=document.getElementById('rem-val');
+  if(over>0){
+    rb.style.background='linear-gradient(135deg,#5b35b0,#3d1f8a)';rb.style.borderColor='#5b35b0';
+    ri.textContent='🟣';ri.classList.remove('pulse');
+    rt.textContent='⚠️ دُفع أكثر من المستحق';rs.textContent='رصيد زائد على الدفعات القادمة';
+    rv.textContent=over.toFixed(3)+' OMR زيادة';
+  } else if(rem<0.001){
+    rb.style.background='linear-gradient(135deg,#0a7c4e,#076640)';rb.style.borderColor='#0a7c4e';
+    ri.textContent='🟢';ri.classList.remove('pulse');
+    rt.textContent='المتبقي لدفعه لـ MeYou';rs.textContent='من المشاريع المكتملة';
+    rv.textContent='✓ مسدّد بالكامل';
+  } else {
+    rb.style.background='linear-gradient(135deg,#c0392b,#96281b)';rb.style.borderColor='#c0392b';
+    ri.textContent='🔴';ri.classList.add('pulse');
+    rt.textContent='المتبقي لدفعه لـ MeYou';rs.textContent='من المشاريع المكتملة';
+    rv.textContent=rem.toFixed(3)+' OMR';
+  }
+
+  var filtered=yf.filter(function(p){
+    if(filt==='all')return true;
+    if(filt==='progress')return p.projStatus==='progress';
+    if(filt==='done')return p.projStatus==='done';
+    return p.payStatus===filt;
+  }).slice().reverse();
+
+  var list=document.getElementById('proj-list');
+  if(!filtered.length){list.innerHTML='<div class="empty"><div class="ei">📂</div><p>لا توجد مشاريع</p></div>';return;}
+
+  list.innerHTML=filtered.map(function(p){
+    var a=al[p.id]||{allocated:0,srcs:[]};
+    var paid=a.allocated,remP=Math.max(0,(+p.meyouDue||0)-paid);
+    var pct=p.meyouDue>0?Math.min(100,(paid/p.meyouDue)*100):0;
+    var ci=(p.costItems||[]).filter(function(x){return x.name||x.amount;});
+    var typeBadge={c:'<span class="badge b-c">تجاري</span>',i:'<span class="badge b-i">داخلي</span>',v:'<span class="badge b-v">استثماري</span>'}[p.type]||'';
+    var projBadge={done:'<span class="badge b-done">مكتمل ✓</span>',progress:'<span class="badge b-progress">جاري</span>',pending:'<span class="badge b-pending">معلّق</span>'}[p.projStatus]||'';
+    var payBadge={paid:'<span class="badge b-paid">مدفوع ✓</span>',partial:'<span class="badge b-partial">جزئي</span>',unpaid:'<span class="badge b-unpaid">لم يُدفع</span>'}[p.payStatus]||'';
+    var editBtns=isEd?'<div class="detail-actions"><button class="btn-edit" data-id="'+p.id+'">✏️ تعديل</button><button class="btn-del" data-id="'+p.id+'">🗑 حذف</button></div>':'';
+    var costRows=ci.map(function(c,i){
+      var files=(c.files||[]).map(function(f){return '<span class="inv-chip" onclick="openFile(\''+encodeURIComponent(JSON.stringify(f))+'\')">📄 '+f.name+'</span>';}).join('');
+      return '<tr><td style="color:var(--text3);font-family:var(--mono)">'+(i+1)+'</td><td style="font-weight:600">'+(c.name||'—')+'</td><td style="font-family:var(--mono);color:var(--red)">'+(+c.amount||0).toFixed(3)+'</td><td style="color:var(--text2)">'+(c.note||'—')+'</td><td>'+(files||'—')+'</td></tr>';
+    }).join('');
+    var allocRows=a.srcs.map(function(s){return '<div class="alloc-row"><span style="font-family:var(--mono);color:var(--text3);width:88px;flex-shrink:0">'+s.date+'</span><span style="flex:1;color:var(--text2)">دفعة GW'+(s.note?' — '+s.note:'')+'</span><span style="font-family:var(--mono);font-weight:600;color:var(--green)">+'+s.amt.toFixed(3)+' OMR</span></div>';}).join('');
+    return '<div class="pcard" id="pc-'+p.id+'">'+
+      '<div class="pcard-top" onclick="toggleD(\''+p.id+'\')">'+
+        '<div><div class="pc-name">'+(p.client||'—')+(p.project?' <span style="font-weight:400;color:var(--text3);font-size:12px">— '+p.project+'</span>':'')+'</div>'+
+        '<div class="pc-sub">'+(p.date||'')+(p.quotation?' · #'+p.quotation:'')+'</div>'+
+        (p.projStatus==='done'?'<div class="pbar" style="margin-top:5px"><div class="pbar-fill'+(pct>=100?' full':'')+'" style="width:'+pct+'%"></div></div>':'')+''+
+        '<div style="margin-top:5px;display:flex;gap:5px;flex-wrap:wrap">'+typeBadge+' '+projBadge+' '+(p.projStatus==='done'?payBadge:'')+'</div></div>'+
+        '<div><div style="font-size:10px;color:var(--text3)">صرف MeYou</div><div style="font-family:var(--mono);font-size:13px;color:var(--red)">'+(+p.totalOutflow||0).toFixed(3)+'</div></div>'+
+        '<div><div style="font-size:10px;color:var(--text3)">مستحق MeYou</div><div style="font-family:var(--mono);font-size:13px;font-weight:600;color:#9b3f50">'+(+p.meyouDue||0).toFixed(3)+'</div></div>'+
+        '<div style="color:var(--text3);font-size:18px">›</div>'+
+      '</div>'+
+      '<div class="pdetail" id="d-'+p.id+'">'+
+        '<div class="dsec">'+
+          '<div class="dsec-title">تفاصيل مالية</div>'+
+          '<div class="dgrid">'+
+            '<div class="dbox"><div class="dbox-l">قيمة الديل</div><div class="dbox-v" style="color:var(--blue)">'+fmt(p.deal)+'</div></div>'+
+            '<div class="dbox"><div class="dbox-l">تكاليف</div><div class="dbox-v" style="color:var(--red)">'+fmt(p.costs)+'</div></div>'+
+            '<div class="dbox"><div class="dbox-l">رسوم GW 5%</div><div class="dbox-v" style="color:var(--purple)">'+fmt(p.gw5)+'</div></div>'+
+            '<div class="dbox"><div class="dbox-l">صافي الربح</div><div class="dbox-v" style="color:var(--green)">'+fmt(p.profit)+'</div></div>'+
+            '<div class="dbox"><div class="dbox-l">ربح MeYou 50%</div><div class="dbox-v" style="color:#9b3f50">'+fmt(p.meyou50)+'</div></div>'+
+            '<div class="dbox"><div class="dbox-l">ربح GW 50%</div><div class="dbox-v">'+fmt(p.gw50)+'</div></div>'+
+            '<div class="dbox" style="grid-column:span 2;background:var(--pink-bg);border-color:#f0c8cf"><div class="dbox-l" style="color:#9b3f50">💰 مستحق MeYou</div><div class="dbox-v" style="color:#9b3f50;font-size:16px">'+fmt(p.meyouDue)+'</div></div>'+
+          '</div>'+
+          (ci.length?'<table class="cd-tbl"><thead><tr><th>#</th><th>بند</th><th>المبلغ</th><th>ملاحظة</th><th>📎</th></tr></thead><tbody>'+costRows+'</tbody></table>':'')+
+          (p.notes?'<div class="note-box">📝 '+p.notes+'</div>':'')+
+          editBtns+
+        '</div>'+
+        (p.projStatus==='done'?
+          '<div class="dsec"><div class="dsec-title">حالة الدفع</div>'+
+          '<div style="display:flex;gap:14px;font-size:12px;margin-bottom:8px">'+
+            '<span style="color:#9b3f50">مستحق: <b style="font-family:var(--mono)">'+fmt(p.meyouDue)+'</b></span>'+
+            '<span style="color:var(--green)">مدفوع: <b style="font-family:var(--mono)">'+fmt(paid)+'</b></span>'+
+            '<span style="color:'+(remP<0.001?'var(--green)':'var(--red)')+'">متبقي: <b style="font-family:var(--mono)">'+(remP<0.001?'✓ مسدّد':fmt(remP))+'</b></span>'+
+          '</div>'+
+          '<div class="pbar" style="margin-bottom:10px"><div class="pbar-fill'+(pct>=100?' full':'')+'" style="width:'+pct+'%"></div></div>'+
+          (a.srcs.length?allocRows:'<div style="font-size:12px;color:var(--text3)">لا توجد دفعات مخصصة بعد</div>')+
+          '</div>':'')+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+function toggleD(id){document.getElementById('d-'+id).classList.toggle('on');}
+
+// PAYMENTS
+function renderPays(){
+  var res=fifo();var al=res.al;
+  var done=projects.filter(function(p){return p.projStatus==='done';});
+  var tDue=done.reduce(function(a,p){return a+(+p.meyouDue||0);},0);
+  var tPaid=gPays.reduce(function(a,g){return a+(+g.amount||0);},0);
+  var tRem=Math.max(0,tDue-tPaid);
+  document.getElementById('hv-due').textContent=fmt(tDue);
+  document.getElementById('hv-paid').textContent=fmt(tPaid);
+  document.getElementById('hv-rem').textContent=tRem<0.001?'✓ مسدّد':fmt(tRem);
+  document.getElementById('hrem').className='hbox hbox-rem'+(tRem<0.001?' zero':'');
+
+  var log=document.getElementById('gp-log');
+  if(!gPays.length){log.innerHTML='<div style="padding:20px;text-align:center;font-size:12px;color:var(--text3)">لا توجد دفعات</div>';}
+  else{
+    log.innerHTML=gPays.slice().reverse().map(function(g){
+      var chips=done.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).map(function(p){
+        var src=(al[p.id]?al[p.id].srcs:[]).find(function(s){return s.gid===g.id;});
+        if(!src)return'';
+        var full=src.amt>=(+p.meyouDue||0)-0.001;
+        return'<span class="chip '+(full?'full':'partial')+'">'+p.client+': '+src.amt.toFixed(3)+'</span>';
+      }).join('');
+      var delBtn=isEd?'<span class="pmt-x" data-gp-del="'+g.id+'">✕</span>':'';
+      var fileHtml=g.file?'<div style="margin-top:3px"><span class="inv-chip" onclick="openFile(\''+encodeURIComponent(JSON.stringify(g.file))+'\')">📄 '+g.file.name+'</span></div>':'';
+      return'<div class="plr"><div class="plr-date">'+g.date+'</div><div class="plr-body"><div class="plr-amt">+'+g.amount.toFixed(3)+' OMR'+(g.note?' <span style="font-size:11px;color:var(--text3);font-weight:400">— '+g.note+'</span>':'')+'</div>'+fileHtml+'<div style="margin-top:3px">'+(chips||'<span style="font-size:10px;color:var(--text3)">—</span>')+'</div></div>'+delBtn+'</div>';
+    }).join('');
+  }
+  var tot=gPays.reduce(function(a,g){return a+(+g.amount||0);},0);
+  document.getElementById('gp-total').textContent=tot>0?'الإجمالي: '+tot.toFixed(3)+' OMR':'';
+
+  var ppl=document.getElementById('ppl-list');
+  if(!done.length){ppl.innerHTML='<div class="empty"><div class="ei">✅</div><p>لا توجد مشاريع مكتملة</p></div>';return;}
+  var sorted=done.slice().sort(function(a,b){return a.date.localeCompare(b.date);});
+  ppl.innerHTML=sorted.map(function(p,i){
+    var a=al[p.id]||{allocated:0,srcs:[]};
+    var paid=a.allocated,rem=Math.max(0,(+p.meyouDue||0)-paid);
+    var pct=p.meyouDue>0?Math.min(100,(paid/p.meyouDue)*100):0;
+    var st=payStatus(+p.meyouDue,paid);
+    var pb={paid:'b-paid',partial:'b-partial',unpaid:'b-unpaid'}[st];
+    var pl={paid:'مدفوع ✓',partial:'جزئي',unpaid:'لم يُدفع'}[st];
+    var srcs=a.srcs.map(function(s){return'<div class="alloc-row"><span style="font-family:var(--mono);color:var(--text3);width:88px;flex-shrink:0">'+s.date+'</span><span style="flex:1;color:var(--text2)">دفعة GW'+(s.note?' — '+s.note:'')+'</span><span style="font-family:var(--mono);font-weight:600;color:var(--green)">+'+s.amt.toFixed(3)+' OMR</span></div>';}).join('');
+    return'<div class="ppl-card'+(st==='paid'?' settled':'')+'">' +
+      '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">'+
+        '<div><div style="font-size:10px;color:var(--text3);font-weight:600;margin-bottom:2px">الأولوية #'+(i+1)+'</div>'+
+        '<div style="font-size:13px;font-weight:600">'+p.client+(p.project?' <span style="font-weight:400;color:var(--text3)">— '+p.project+'</span>':'')+'</div>'+
+        '<div style="font-size:11px;color:var(--text3)">'+(p.date||'')+'</div></div>'+
+        '<span class="badge '+pb+'">'+pl+'</span>'+
+      '</div>'+
+      '<div class="pbar" style="margin-bottom:7px"><div class="pbar-fill'+(pct>=100?' full':'')+'" style="width:'+pct+'%"></div></div>'+
+      '<div style="display:flex;gap:14px;font-size:11px">'+
+        '<span>مستحق: <b style="font-family:var(--mono);color:#9b3f50">'+fmt(p.meyouDue)+'</b></span>'+
+        '<span>مدفوع: <b style="font-family:var(--mono);color:var(--green)">'+fmt(paid)+'</b></span>'+
+        '<span>متبقي: <b style="font-family:var(--mono);color:'+(rem<0.001?'var(--green)':'var(--red)')+'">'+( rem<0.001?'✓ مسدّد':fmt(rem))+'</b></span>'+
+      '</div>'+
+      (a.srcs.length?'<div style="margin-top:8px">'+srcs+'</div>':'<div style="font-size:11px;color:var(--text3);margin-top:6px;font-style:italic">لم تُخصص دفعة بعد</div>')+
+    '</div>';
+  }).join('');
+}
+
+// GP file
+function gpFileChanged(){
+  var fi=document.getElementById('gp-file');
+  var fp=document.getElementById('gp-fp');
+  if(!fi.files.length){gpFile=null;fp.innerHTML='';return;}
+  var file=fi.files[0];
+  var r=new FileReader();
+  r.onload=function(e){
+    gpFile={name:file.name,dataUrl:e.target.result,type:file.type};
+    fp.innerHTML='<div class="inv-file"><span class="inv-file-name" onclick="openFile(\''+encodeURIComponent(JSON.stringify(gpFile))+'\')">📄 '+file.name+'</span><span class="inv-del" onclick="clearGpFile()">✕</span></div>';
+  };
+  r.readAsDataURL(file);
+}
+function clearGpFile(){gpFile=null;document.getElementById('gp-file').value='';document.getElementById('gp-fp').innerHTML='';}
+
+function addGP(){
+  if(!isEd){toast('⚠️ Viewer');return;}
+  var date=document.getElementById('gp-date').value;
+  var amt=parseFloat(document.getElementById('gp-amt').value);
+  var note=document.getElementById('gp-note').value.trim();
+  if(!amt||amt<=0){toast('⚠️ أدخل مبلغاً');return;}
+  gPays.push({id:Date.now().toString(),date:date,amount:amt,note:note,file:gpFile||null});
+  save();
+  document.getElementById('gp-amt').value='';
+  document.getElementById('gp-note').value='';
+  document.getElementById('gp-date').value=td();
+  clearGpFile();
+  toast('✓ تم تسجيل الدفعة');
+  renderPays();
+  var al=fifo().al;
+  projects.forEach(function(p){if(p.projStatus==='done')p.payStatus=payStatus(+p.meyouDue,(al[p.id]||{allocated:0}).allocated);});
+  save();
+}
+function delGP(id){
+  if(!isEd){toast('⚠️ Viewer mode');return;}
+  if(!confirm('حذف هذه الدفعة؟'))return;
+  gPays=gPays.filter(function(g){return g.id!==id;});
+  save();
+  toast('✓ تم حذف الدفعة');
+  renderPays();
+  // recompute pay status
+  var al=fifo().al;
+  projects.forEach(function(p){if(p.projStatus==='done')p.payStatus=payStatus(+p.meyouDue,(al[p.id]||{allocated:0}).allocated);});
+  save();
+}
+
+// FILE VIEWER
+function openFile(encoded){
+  var f;
+  try{f=JSON.parse(decodeURIComponent(encoded));}catch(e){return;}
+  if(f.type==='application/pdf'){var a=document.createElement('a');a.href=f.dataUrl;a.target='_blank';a.click();return;}
+  var lb=document.getElementById('lb');
+  var img=document.getElementById('lb-img');
+  img.src=f.dataUrl;
+  document.getElementById('lb-dl').onclick=function(){var a=document.createElement('a');a.href=f.dataUrl;a.download=f.name;a.click();};
+  lb.classList.add('on');
+  lb.onclick=function(e){if(e.target===lb)closeLB();};
+}
+function closeLB(){document.getElementById('lb').classList.remove('on');document.getElementById('lb-img').src='';}
+
+// FORM LOGIC
+function setType(t){
+  pType=t;
+  document.getElementById('f-type').value=t;
+  ['c','i','v'].forEach(function(x){
+    var b=document.getElementById('t'+x);
+    if(b)b.className='tbtn';
+  });
+  var sel=document.getElementById('t'+t);
+  if(sel)sel.className='tbtn sel-'+t;
+  var ni=document.getElementById('f-ni');if(ni)ni.classList.toggle('on',t==='i');
+  var nv=document.getElementById('f-nv');if(nv)nv.classList.toggle('on',t==='v');
+  calc();
+}
+function setSt(v){
+  pSt=v;
+  var el=document.getElementById('f-st');if(el)el.value=v;
+  ['progress','done','pending'].forEach(function(x){
+    var b=document.getElementById('sp-'+x);if(b)b.className='spill';
+  });
+  var active=document.getElementById('sp-'+v);
+  if(active)active.className='spill s-'+v;
+}
+function makeRow(num,name,amount,note,files){
+  name=name||'';amount=amount||'';note=note||'';files=files||[];
+  var tr=document.createElement('tr');tr.id='row-'+num;
+  var fs=[].concat(files);
+
+  var t0=document.createElement('td');t0.style.cssText='text-align:center;color:var(--text3);font-size:11px;font-family:var(--mono);width:28px';t0.textContent=num;
+  var t1=document.createElement('td');var i1=document.createElement('input');i1.type='text';i1.value=name;i1.placeholder='طباعة، شحن...';i1.oninput=calc;t1.appendChild(i1);
+  var t2=document.createElement('td');t2.style.width='115px';var i2=document.createElement('input');i2.type='number';i2.value=amount;i2.placeholder='0.000';i2.step='0.001';i2.min='0';i2.style.fontFamily='var(--mono)';i2.oninput=calc;t2.appendChild(i2);
+  var t3=document.createElement('td');var i3=document.createElement('input');i3.type='text';i3.value=note;i3.placeholder='الكمية، تفاصيل...';t3.appendChild(i3);
+
+  var t4=document.createElement('td');t4.style.cssText='width:120px;padding:4px';
+  function renderCell(){
+    t4.innerHTML='';
+    var lbl=document.createElement('label');lbl.className='inv-lbl';lbl.textContent='📎 رفع';
+    var fi=document.createElement('input');fi.type='file';fi.accept='image/*,application/pdf';fi.multiple=true;fi.style.display='none';
+    fi.addEventListener('change',function(){
+      Array.from(fi.files).forEach(function(file){
+        var r=new FileReader();
+        r.onload=function(e){fs.push({name:file.name,dataUrl:e.target.result,type:file.type});renderCell();};
+        r.readAsDataURL(file);
+      });fi.value='';
+    });
+    lbl.appendChild(fi);t4.appendChild(lbl);
+    fs.forEach(function(f,i){
+      var row=document.createElement('div');row.className='inv-file';
+      var nm=document.createElement('span');nm.className='inv-file-name';nm.textContent='📄 '+f.name;nm.title=f.name;
+      nm.addEventListener('click',function(){openFile(encodeURIComponent(JSON.stringify(f)));});
+      var x=document.createElement('span');x.className='inv-del';x.textContent='✕';
+      x.addEventListener('click',function(){fs.splice(i,1);renderCell();});
+      row.append(nm,x);t4.appendChild(row);
+    });
+  }
+  renderCell();
+  tr._getFiles=function(){return fs.slice();};
+
+  var t5=document.createElement('td');t5.style.width='28px';
+  var db=document.createElement('button');db.className='delbtn';db.textContent='×';
+  db.addEventListener('click',function(){delRow(num);});t5.appendChild(db);
+  tr.append(t0,t1,t2,t3,t4,t5);
+  return tr;
+}
+function addRow(){rowCnt++;document.getElementById('cost-body').appendChild(makeRow(rowCnt));}
+function delRow(id){var el=document.getElementById('row-'+id);if(el){el.remove();calc();}}
+
+function calc(){
+  var deal=parseFloat(document.getElementById('f-deal').value)||0;
+  var gw5=deal*0.05;
+  document.getElementById('f-gw5').value=gw5?gw5.toFixed(3):'';
+  var costs=0;
+  document.querySelectorAll('#cost-body tr').forEach(function(tr){
+    var tds=tr.querySelectorAll('td');
+    costs+=parseFloat((tds[2]&&tds[2].querySelector('input')&&tds[2].querySelector('input').value)||0)||0;
+  });
+  var isI=pType==='i',isV=pType==='v';
+  var profit=isI||isV?0:Math.max(0,deal-costs-gw5);
+  var my50=isV?costs*0.5:profit*0.5;
+  var gw50=isV?costs*0.5:profit*0.5;
+  var due=isV?costs*0.5:costs+my50;
+  document.getElementById('r-costs').textContent=fmt(costs);
+  document.getElementById('r-profit').textContent=isV?'— لا ينطبق':fmt(profit);
+  document.getElementById('r-gw5d').textContent=isV?'— لا ينطبق':fmt(gw5);
+  document.getElementById('r-my50').textContent=isV?fmt(my50)+' (50%)':fmt(my50);
+  document.getElementById('r-gw50').textContent=isV?fmt(gw50)+' (50%)':fmt(gw50);
+  document.getElementById('r-due').textContent=fmt(due);
+}
+
+function saveProj(){
+  if(!isEd)return;
+  var client=document.getElementById('f-client').value.trim();
+  var date=document.getElementById('f-date').value;
+  if(!client||!date){toast('⚠️ أدخل التاريخ واسم العميل');return;}
+  var deal=parseFloat(document.getElementById('f-deal').value)||0;
+  var gw5=deal*0.05;
+  var costs=0;var costItems=[];
+  document.querySelectorAll('#cost-body tr').forEach(function(tr){
+    var tds=tr.querySelectorAll('td');
+    var name=(tds[1]&&tds[1].querySelector('input')&&tds[1].querySelector('input').value||'').trim();
+    var amt=parseFloat((tds[2]&&tds[2].querySelector('input')&&tds[2].querySelector('input').value)||0)||0;
+    var note=(tds[3]&&tds[3].querySelector('input')&&tds[3].querySelector('input').value||'').trim();
+    var files=tr._getFiles?tr._getFiles():[];
+    if(name||amt){costs+=amt;costItems.push({name:name||'—',amount:amt,note:note,files:files});}
+  });
+  var isI=pType==='i',isV=pType==='v';
+  var profit=isI||isV?0:Math.max(0,deal-costs-gw5);
+  var my50=isV?costs*0.5:profit*0.5;
+  var gw50=isV?costs*0.5:profit*0.5;
+  var due=isV?costs*0.5:costs+my50;
+  var eid=document.getElementById('f-id').value;
+  var proj={
+    id:eid||Date.now().toString(),date:date,client:client,
+    project:document.getElementById('f-project').value.trim(),
+    quotation:document.getElementById('f-quot').value.trim(),
+    type:pType,deal:deal,gw5:gw5,costs:costs,totalOutflow:costs,
+    profit:profit,meyou50:my50,gw50:gw50,meyouDue:due,
+    costItems:costItems,projStatus:pSt,payStatus:'unpaid',
+    notes:document.getElementById('f-notes').value.trim()
+  };
+  if(eid){var idx=projects.findIndex(function(p){return p.id===eid;});if(idx!==-1)projects[idx]=proj;}
+  else projects.push(proj);
+  save();toast(eid?'✓ تم التحديث':'✓ تم الحفظ');
+  setTimeout(function(){resetForm(true);go('projects');},600);
+}
+
+function editProj(id){
+  if(!isEd)return;
+  var p=projects.find(function(x){return x.id===id;});if(!p)return;
+  resetForm(true);
+  document.getElementById('form-title').textContent='تعديل مشروع';
+  document.getElementById('btn-save').textContent='💾 حفظ التعديلات';
+  document.getElementById('f-id').value=p.id;
+  document.getElementById('f-date').value=p.date||'';
+  document.getElementById('f-quot').value=p.quotation||'';
+  document.getElementById('f-client').value=p.client||'';
+  document.getElementById('f-project').value=p.project||'';
+  document.getElementById('f-deal').value=p.deal||'';
+  document.getElementById('f-notes').value=p.notes||'';
+  setType(p.type||'c');setSt(p.projStatus||'progress');
+  document.getElementById('cost-body').innerHTML='';rowCnt=0;
+  (p.costItems||[]).forEach(function(ci){
+    rowCnt++;
+    document.getElementById('cost-body').appendChild(makeRow(rowCnt,ci.name,ci.amount,ci.note,ci.files||[]));
+  });
+  if(!rowCnt){addRow();addRow();addRow();}
+  calc();go('form');
+}
+
+function delProj(id){
+  if(!isEd){toast('⚠️ Viewer mode');return;}
+  if(!confirm('حذف المشروع نهائياً؟'))return;
+  projects=projects.filter(function(p){return p.id!==id;});
+  save();
+  toast('✓ تم الحذف');
+  renderProjs();
+}
+
+function resetForm(silent){
+  if(!silent&&document.getElementById('f-client').value.trim()&&!confirm('مسح البيانات؟'))return;
+  ['f-client','f-project','f-quot','f-deal','f-gw5','f-notes','f-id'].forEach(function(x){document.getElementById(x).value='';});
+  document.getElementById('cost-body').innerHTML='';rowCnt=0;
+  setType('c');setSt('progress');
+  document.getElementById('f-date').value=td();
+  addRow();addRow();addRow();calc();
+  if(!silent)toast('تم المسح');
+}
+
+// REPORT
+function setRepRange(r){
+  var now=new Date(),y=now.getFullYear(),m=now.getMonth();
+  var from,to;
+  if(r==='month'){from=new Date(y,m,1);to=new Date(y,m+1,0);}
+  else if(r==='quarter'){var q=Math.floor(m/3);from=new Date(y,q*3,1);to=new Date(y,q*3+3,0);}
+  else if(r==='year'){from=new Date(y,0,1);to=new Date(y,11,31);}
+  else{document.getElementById('rep-from').value='';document.getElementById('rep-to').value='';return;}
+  document.getElementById('rep-from').value=from.toISOString().split('T')[0];
+  document.getElementById('rep-to').value=to.toISOString().split('T')[0];
+}
+
+function buildReport(){
+  var from=document.getElementById('rep-from').value;
+  var to=document.getElementById('rep-to').value;
+  var al=fifo().al;
+  var filtered=projects.filter(function(p){
+    if(!p.date)return true;
+    if(from&&p.date<from)return false;
+    if(to&&p.date>to)return false;
+    return true;
+  });
+  var out=document.getElementById('rep-out');
+  var dlBtn=document.getElementById('btn-dl');
+  if(!filtered.length){out.innerHTML='<div class="empty"><div class="ei">📋</div><p>لا توجد مشاريع في هذه الفترة</p></div>';dlBtn.style.display='none';return;}
+
+  var comm=filtered.filter(function(p){return p.type==='c';});
+  var inter=filtered.filter(function(p){return p.type==='i';});
+  var inv=filtered.filter(function(p){return p.type==='v';});
+  var totDeal=comm.reduce(function(a,p){return a+(+p.deal||0);},0);
+  var totCost=filtered.reduce(function(a,p){return a+(+p.costs||0);},0);
+  var totProfit=comm.reduce(function(a,p){return a+(+p.profit||0);},0);
+  var totMy=comm.reduce(function(a,p){return a+(+p.meyou50||0);},0);
+  var totGw=comm.reduce(function(a,p){return a+(+p.gw50||0);},0);
+  var totDue=filtered.reduce(function(a,p){return a+(+p.meyouDue||0);},0);
+  var doneDue=projects.filter(function(p){return p.projStatus==='done';}).reduce(function(a,p){return a+(+p.meyouDue||0);},0);
+  var totPaid=gPays.reduce(function(a,g){return a+(+g.amount||0);},0);
+  var remAmt=Math.max(0,doneDue-totPaid);
+  var period=from&&to?from+' → '+to:from?'من '+from:to?'حتى '+to:'جميع الفترات';
+
+  var wrap=document.createElement('div');
+  wrap.id='report-content';
+  wrap.style.cssText='background:#fff;border:1px solid #e0e0e0;border-radius:12px;overflow:hidden';
+
+  // header
+  var hdr=document.createElement('div');
+  hdr.style.cssText='background:linear-gradient(135deg,#0f0f0f,#233D79);padding:24px 26px;color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px';
+  hdr.innerHTML='<div><div style="font-size:20px;font-weight:700">GW ♥ MeYou</div><div style="font-size:12px;opacity:.65;margin-top:3px">تقرير المشاريع</div></div>'+
+    '<div style="text-align:left"><div style="font-size:11px;opacity:.55">الفترة</div><div style="font-size:13px;font-weight:600;font-family:monospace">'+period+'</div><div style="font-size:10px;opacity:.45">'+new Date().toLocaleDateString('ar-SA')+'</div></div>';
+  wrap.appendChild(hdr);
+
+  // summary
+  var sumData=[
+    ['إجمالي المشاريع',''+filtered.length,'#233D79','#edf1f9',comm.length+' تجاري · '+inter.length+' داخلي · '+inv.length+' استثماري'],
+    ['قيمة التجاري',totDeal.toFixed(3)+' OMR','#233D79','#edf1f9','قيمة الديلات'],
+    ['صرف MeYou',totCost.toFixed(3)+' OMR','#c0392b','#fdecea','التكاليف المدفوعة'],
+    ['مستحق MeYou',totDue.toFixed(3)+' OMR','#9b3f50','#fdf0f2','تكاليف + ربح 50%'],
+    ['صافي الأرباح',totProfit.toFixed(3)+' OMR','#0a7c4e','#e6f5ee','التجاري فقط'],
+    ['ربح MeYou 50%',totMy.toFixed(3)+' OMR','#0a7c4e','#e6f5ee','نصف صافي الربح'],
+    ['ربح GW 50%',totGw.toFixed(3)+' OMR','#1c1c1c','#f0f0f0','نصف صافي الربح'],
+    remAmt<0.001?['حالة الدفعات','✓ مسدّد','#0a7c4e','#e6f5ee','جميع المكتملة']:['المتبقي للدفع',remAmt.toFixed(3)+' OMR','#c0392b','#fdecea','من المشاريع المكتملة'],
+  ];
+  var sumDiv=document.createElement('div');
+  sumDiv.style.cssText='padding:16px 22px;background:#f8f9fb;border-bottom:1px solid #eee;display:grid;grid-template-columns:repeat(4,1fr);gap:9px';
+  sumData.forEach(function(d){
+    var box=document.createElement('div');
+    box.style.cssText='background:'+d[3]+';border:1px solid '+d[2]+'33;border-radius:8px;padding:11px 13px';
+    box.innerHTML='<div style="font-size:10px;font-weight:600;color:'+d[2]+';text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px">'+d[0]+'</div>'+
+      '<div style="font-family:monospace;font-size:14px;font-weight:700;color:'+d[2]+'">'+d[1]+'</div>'+
+      '<div style="font-size:10px;color:'+d[2]+';opacity:.6;margin-top:2px">'+d[4]+'</div>';
+    sumDiv.appendChild(box);
+  });
+  wrap.appendChild(sumDiv);
+
+  // table
+  var tDiv=document.createElement('div');tDiv.style.cssText='padding:16px 22px';
+  var tTitle=document.createElement('div');tTitle.style.cssText='font-size:13px;font-weight:600;color:#333;margin-bottom:10px';tTitle.textContent='تفاصيل المشاريع ('+filtered.length+')';
+  tDiv.appendChild(tTitle);
+  var tWrap=document.createElement('div');tWrap.style.overflowX='auto';
+  var tbl=document.createElement('table');tbl.style.cssText='width:100%;border-collapse:collapse;min-width:760px';
+  var headers=['#','التاريخ','العميل','النوع','الديل','التكاليف','الربح','مستحق MeYou','الحالة','الدفع'];
+  var thead=document.createElement('thead');
+  var hrow=document.createElement('tr');hrow.style.cssText='background:#f5f5f5;border-bottom:2px solid #e0e0e0';
+  headers.forEach(function(h){var th=document.createElement('th');th.style.cssText='padding:8px 10px;font-size:10px;font-weight:700;color:#666;text-transform:uppercase;text-align:right;white-space:nowrap';th.textContent=h;hrow.appendChild(th);});
+  thead.appendChild(hrow);tbl.appendChild(thead);
+
+  var tbody=document.createElement('tbody');
+  var typeL={c:'تجاري',i:'داخلي',v:'استثماري'};
+  var typeC={c:'#233D79',i:'#8a5c00',v:'#1a5fa8'};
+  var stL={done:'مكتمل ✓',progress:'جاري',pending:'معلّق'};
+  var stC={done:'#0a7c4e',progress:'#8a5c00',pending:'#666'};
+  var pyL={paid:'مدفوع ✓',partial:'جزئي',unpaid:'لم يُدفع'};
+  var pyC={paid:'#0a7c4e',partial:'#8a5c00',unpaid:'#c0392b'};
+  filtered.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).forEach(function(p,i){
+    var tr=document.createElement('tr');tr.style.borderBottom='1px solid #f0f0f0';
+    var tc=typeC[p.type]||'#888',sc=stC[p.projStatus]||'#888',pc=pyC[p.payStatus]||'#888';
+    var cells=[
+      i+1,p.date||'—',p.client+(p.project?'\n'+p.project:''),
+      '<span style="background:'+tc+'22;color:'+tc+';border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600">'+(typeL[p.type]||'—')+'</span>',
+      (+p.deal||0).toFixed(3),(+p.costs||0).toFixed(3),(+p.profit||0).toFixed(3),(+p.meyouDue||0).toFixed(3),
+      '<span style="background:'+sc+'22;color:'+sc+';border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600">'+(stL[p.projStatus]||'—')+'</span>',
+      p.projStatus==='done'?'<span style="background:'+pc+'22;color:'+pc+';border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600">'+(pyL[p.payStatus]||'—')+'</span>':'—'
+    ];
+    cells.forEach(function(c,ci){
+      var td=document.createElement('td');td.style.cssText='padding:8px 10px;font-size:12px'+(ci>=4&&ci<=7?';font-family:monospace':'');
+      if(typeof c==='string'&&c.indexOf('<')!==-1)td.innerHTML=c;
+      else if(ci===2){td.innerHTML='<span style="font-weight:600">'+p.client+'</span>'+(p.project?'<br><span style="font-size:11px;color:#888">'+p.project+'</span>':'');}
+      else td.textContent=c;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  // tfoot
+  var tfoot=document.createElement('tfoot');
+  var frow=document.createElement('tr');
+  frow.style.cssText='background:#f8f8f8;border-top:2px solid #ddd';
+  var ftd0=document.createElement('td');ftd0.colSpan=4;ftd0.style.cssText='padding:9px 10px;font-size:12px;font-weight:700;color:#555';ftd0.textContent='الإجمالي';frow.appendChild(ftd0);
+  var ftd1=document.createElement('td');ftd1.style.cssText='padding:9px 10px;font-family:monospace;font-size:13px;font-weight:700;color:#233D79';ftd1.textContent=totDeal.toFixed(3);frow.appendChild(ftd1);
+  var ftd2=document.createElement('td');ftd2.style.cssText='padding:9px 10px;font-family:monospace;font-size:13px;font-weight:700;color:#c0392b';ftd2.textContent=totCost.toFixed(3);frow.appendChild(ftd2);
+  var ftd3=document.createElement('td');ftd3.style.cssText='padding:9px 10px;font-family:monospace;font-size:13px;font-weight:700;color:#0a7c4e';ftd3.textContent=totProfit.toFixed(3);frow.appendChild(ftd3);
+  var ftd4=document.createElement('td');ftd4.style.cssText='padding:9px 10px;font-family:monospace;font-size:13px;font-weight:700;color:#9b3f50';ftd4.textContent=totDue.toFixed(3);frow.appendChild(ftd4);
+  var ftd5=document.createElement('td');ftd5.colSpan=2;frow.appendChild(ftd5);
+  tfoot.appendChild(frow);tbl.appendChild(tfoot);
+
+  tWrap.appendChild(tbl);tDiv.appendChild(tWrap);wrap.appendChild(tDiv);
+
+  // footer
+  var ftr=document.createElement('div');
+  ftr.style.cssText='padding:12px 22px;background:#f5f5f5;border-top:1px solid #eee;display:flex;justify-content:space-between;font-size:11px;color:#aaa';
+  ftr.innerHTML='<span>GW × MeYou Dashboard</span><span style="font-family:monospace">'+new Date().toLocaleString('ar-SA')+'</span>';
+  wrap.appendChild(ftr);
+
+  out.innerHTML='';out.appendChild(wrap);
+  dlBtn.style.display='inline-flex';
+}
+
+function downloadReport(){
+  var el=document.getElementById('report-content');
+  if(!el){toast('⚠️ أنشئ التقرير أولاً');return;}
+  var html='<!DOCTYPE html><html dir="rtl" lang="ar"><head><meta charset="UTF-8"><title>تقرير GW x MeYou</title>'+
+    '<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Arial,sans-serif;background:#fff;padding:20px}'+
+    '@media print{.no-print{display:none!important}}</style>'+
+    '</head><body>'+el.outerHTML+
+    '<div class="no-print" style="margin-top:20px;text-align:center">'+
+    '<button onclick="window.print()" style="padding:10px 24px;background:#233D79;color:#fff;border:none;border-radius:8px;font-size:13px;cursor:pointer">🖨 طباعة / حفظ PDF</button>'+
+    '</div></body></html>';
+  var blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  var url=URL.createObjectURL(blob);
+  var a=document.createElement('a');
+  a.href=url;
+  a.download='تقرير-GW-MeYou-'+new Date().toISOString().split('T')[0]+'.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  toast('✓ تم تنزيل التقرير');
+}
+
+function toast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  setTimeout(function(){t.classList.remove('on');},2600);
+}
+</script>
+</body>
+</html>
